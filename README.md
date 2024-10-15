@@ -11,12 +11,12 @@ In this Battleship game, the program randomly arranges ships on a 10x10 grid. Th
 1. **Grid**: The game is played on a 10x10 grid, with rows labeled A-J and columns labeled 0-9.
 2. **Ships**: Various types of ships are placed on the grid, each occupying a different number of consecutive cells. The ships are placed either horizontally or vertically.
 3. **Ship Types**:
-    - **Destroyer**: Occupies 2 cells.
+    - **Patrol Boat**: Occupies 2 cells.
     - **Submarine**: Occupies 3 cells.
-    - **Cruiser**: Occupies 3 cells.
+    - **Destroyer**: Occupies 3 cells.
     - **Battleship**: Occupies 4 cells.
-    - **Carrier**: Occupies 5 cells.
-4. **Guessing**: The user makes guesses by specifying a cell (e.g., A0, B5). The program indicates whether the guess is a hit (a ship is at that location) or a miss.
+    - **Aircraft Carrier**: Occupies 5 cells.
+4. **Guessing**: The user makes guesses by specifying a cell's row and column. The program indicates whether the guess is a hit (a ship is at that location) or a miss.
 5. **Game Over**: The game ends when all ships are sunk or the user runs out of guesses.
 6. **Feedback**: After each guess, the program updates the grid to show hits and misses, and provides feedback on the number of guesses made and remaining.
 
