@@ -8,7 +8,7 @@ In this assignment, you will implement a Battleship game model by creating a cla
 
 In this Battleship game, the program randomly arranges ships on a 10x10 grid. The user’s objective is to sink all the ships by making guesses about their locations. Here are the key rules:
 
-1. **Grid**: The game is played on a 10x10 grid, with rows labeled A-J and columns labeled 0-9.
+1. **Grid**: The game is played on a 10x10 grid.
 2. **Ships**: Various types of ships are placed on the grid, each occupying a different number of consecutive cells. The ships are placed either horizontally or vertically.
 3. **Ship Types**:
     - **Patrol Boat**: Occupies 2 cells.
