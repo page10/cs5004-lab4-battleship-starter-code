@@ -117,6 +117,7 @@ public class BattleshipModelImpl implements BattleshipModel {
   @Override
   public boolean makeGuess(int row, int col)
       throws IllegalArgumentException, IllegalStateException {
+    // deal with exception
     if (row < 0 || row >= height || col < 0 || col >= width) {
       throw new IllegalArgumentException("Coordinates out of bounds. Rows: A-J, Columns: 0-9.");
     }
@@ -125,8 +126,29 @@ public class BattleshipModelImpl implements BattleshipModel {
       throw new IllegalStateException("Game is already over.");
     }
 
+    // deal with guess count
     guessCount++;
 
+    // sunk the ship if it is a hit
+    boolean hit = checkHit(row, col);  // don't like it. checking and modifying should be separated
+
+    // update visual map
+    updateVisualMap(new Vector2Int(row, col), hit);
+
+    return hit;
+
+  }
+
+
+  /**
+   * Check if the guess is a hit.
+   * sunk the ship if it is a hit.
+   *
+   * @param row the row index (0-based)
+   * @param col the column index (0-based)
+   * @return true if the guess was a hit, false otherwise
+   */
+  private boolean checkHit(int row, int col) {
     for (Ship ship : ships) {
       for (Vector2Int body : ship.getBody()) {
         if (body.gridX == row && body.gridY == col) {
@@ -136,6 +158,15 @@ public class BattleshipModelImpl implements BattleshipModel {
       }
     }
     return false;
+  }
+
+  private void updateVisualMap(Vector2Int pos, boolean hit) {
+    if (hit) {
+      visualMap[pos.gridX][pos.gridY] = CellState.HIT;
+    } else {
+      visualMap[pos.gridX][pos.gridY] = CellState.MISS;
+    }
+
   }
 
   /**
@@ -196,7 +227,7 @@ public class BattleshipModelImpl implements BattleshipModel {
    */
   @Override
   public CellState[][] getCellGrid() {
-    return new CellState[0][];
+    return visualMap;
   }
 
   /**
@@ -208,6 +239,20 @@ public class BattleshipModelImpl implements BattleshipModel {
    */
   @Override
   public ShipType[][] getShipGrid() {
-    return new ShipType[0][];
+    ShipType[][] shipGrid = new ShipType[height][width];
+//    for (int i = 0; i < height; i++) {
+//      for (int j = 0; j < width; j++) {
+//        shipGrid[i][j] = ShipType.EMPTY;
+//      }
+//    }
+    if (!isGameOver()) {
+      throw new IllegalStateException("Game is not over yet.");
+    }
+    for (Ship ship : ships) {
+      for (Vector2Int body : ship.getBody()) {
+        shipGrid[body.gridX][body.gridY] = ship.getType();
+      }
+    }
+    return shipGrid;
   }
 }
