@@ -1,14 +1,16 @@
 package battleship;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
+/**
+ * Represents the model for the Battleship game.
+ */
 public class BattleshipModelImpl implements BattleshipModel {
 
   private final int height = 10;  // height of the map
   private final int width = 10;  // width of the map
   private final int maxGuesses = 10;  // maximum number of guesses
+  private int guessCount = 0;  // number of guesses made
 
   private CellState[][] visualMap;  // map of the game
   private ArrayList<Ship> ships;  // list of ships
@@ -16,7 +18,7 @@ public class BattleshipModelImpl implements BattleshipModel {
   /**
    * Generate initial visual map.
    */
-  private void initvisualMap() {
+  private void initVisualMap() {
     visualMap = new CellState[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -75,7 +77,7 @@ public class BattleshipModelImpl implements BattleshipModel {
    */
   @Override
   public void startGame() throws IllegalStateException {
-    initvisualMap();
+    initVisualMap();
     ships = new ArrayList<>();
     ArrayList<Vector2Int> occupiedGrids = new ArrayList<>();
     for (ShipType shipType : ShipType.values()) {
@@ -113,7 +115,26 @@ public class BattleshipModelImpl implements BattleshipModel {
    * @throws IllegalStateException    if the game is already over
    */
   @Override
-  public boolean makeGuess(int row, int col) {
+  public boolean makeGuess(int row, int col)
+      throws IllegalArgumentException, IllegalStateException {
+    if (row < 0 || row >= height || col < 0 || col >= width) {
+      throw new IllegalArgumentException("Coordinates out of bounds. Rows: A-J, Columns: 0-9.");
+    }
+
+    if (isGameOver()) {
+      throw new IllegalStateException("Game is already over.");
+    }
+
+    guessCount++;
+
+    for (Ship ship : ships) {
+      for (Vector2Int body : ship.getBody()) {
+        if (body.gridX == row && body.gridY == col) {
+          ship.sink();
+          return true;
+        }
+      }
+    }
     return false;
   }
 
@@ -154,7 +175,7 @@ public class BattleshipModelImpl implements BattleshipModel {
    */
   @Override
   public int getGuessCount() {
-    return 0;
+    return guessCount;
   }
 
   /**
@@ -164,7 +185,7 @@ public class BattleshipModelImpl implements BattleshipModel {
    */
   @Override
   public int getMaxGuesses() {
-    return 0;
+    return maxGuesses;
   }
 
 
