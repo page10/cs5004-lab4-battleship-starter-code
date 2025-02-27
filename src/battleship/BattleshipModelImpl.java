@@ -74,8 +74,32 @@ public class BattleshipModelImpl implements BattleshipModel {
    * Initializes the game by setting up the grids and randomly placing ships.
    */
   @Override
-  public void startGame() {
-
+  public void startGame() throws IllegalStateException {
+    initvisualMap();
+    ships = new ArrayList<>();
+    ArrayList<Vector2Int> occupiedGrids = new ArrayList<>();
+    for (ShipType shipType : ShipType.values()) {
+      int boatLength = shipType.getSize();
+      boolean isVertical = Math.random() < 0.5;
+      ArrayList<Vector2Int> legalPlaces = findLegalStartPlaceForShip(occupiedGrids, boatLength,
+          isVertical);
+      if (legalPlaces.size() == 0) {
+        throw new IllegalStateException("No legal place for ship " + shipType);
+      }
+      int randomIndex = (int) (Math.random() * legalPlaces.size());
+      Vector2Int startPlace = legalPlaces.get(randomIndex);
+      ArrayList<Vector2Int> body = new ArrayList<>();
+      for (int i = 0; i < boatLength; i++) {
+        if (isVertical) {
+          body.add(new Vector2Int(startPlace.gridX + i, startPlace.gridY));
+          occupiedGrids.add(new Vector2Int(startPlace.gridX + i, startPlace.gridY));
+        } else {
+          body.add(new Vector2Int(startPlace.gridX, startPlace.gridY + i));
+          occupiedGrids.add(new Vector2Int(startPlace.gridX, startPlace.gridY + i));
+        }
+      }
+      ships.add(new Ship(shipType, body));
+    }
   }
 
   /**
