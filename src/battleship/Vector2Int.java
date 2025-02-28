@@ -12,11 +12,21 @@ public class Vector2Int {
     this.gridY = y;
   }
 
-  public boolean equals(Vector2Int other) {
-    return this.gridX == other.gridX && this.gridY == other.gridY;
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Vector2Int that = (Vector2Int) obj;
+    return gridX == that.gridX && gridY == that.gridY;
   }
 
-  public boolean equals(int x, int y) {
-    return this.gridX == x && this.gridY == y;
+  @Override
+  public int hashCode() {
+    return 31 * gridX + gridY;
   }
+  
 }

@@ -38,11 +38,13 @@ public class BattleshipModelImpl implements BattleshipModel {
   private ArrayList<Vector2Int> findLegalStartPlaceForShip(ArrayList<Vector2Int> occupiedGrids,
                                                            int boatLength, boolean isVertical) {
     ArrayList<Vector2Int> legalPlaces = new ArrayList<>();
+
     if (isVertical) {
       for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
           boolean isLegal = true;
           for (int k = 0; k < boatLength; k++) {
+
             if (i + k >= height || occupiedGrids.contains(new Vector2Int(i + k, j))) {
               isLegal = false;
               break;
@@ -69,6 +71,7 @@ public class BattleshipModelImpl implements BattleshipModel {
         }
       }
     }
+
     return legalPlaces;
   }
 
@@ -101,6 +104,7 @@ public class BattleshipModelImpl implements BattleshipModel {
         }
       }
       ships.add(new Ship(shipType, body));
+
     }
   }
 
@@ -240,14 +244,7 @@ public class BattleshipModelImpl implements BattleshipModel {
   @Override
   public ShipType[][] getShipGrid() {
     ShipType[][] shipGrid = new ShipType[height][width];
-//    for (int i = 0; i < height; i++) {
-//      for (int j = 0; j < width; j++) {
-//        shipGrid[i][j] = ShipType.EMPTY;
-//      }
-//    }
-    if (!isGameOver()) {
-      throw new IllegalStateException("Game is not over yet.");
-    }
+
     for (Ship ship : ships) {
       for (Vector2Int body : ship.getBody()) {
         shipGrid[body.gridX][body.gridY] = ship.getType();
