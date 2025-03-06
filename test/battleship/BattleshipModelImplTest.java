@@ -78,8 +78,18 @@ public class BattleshipModelImplTest {
     assertTrue(visualMap[0][0] == CellState.HIT || visualMap[0][0] == CellState.MISS);
   }
 
+
   @Test
-  public void isGameOver() {
+  public void testIsGameOverMaxGuessesReached() {
+    for (int i = 0; i < model.getMaxGuesses(); i++) {
+      model.makeGuess(0, 0);
+    }
+    assertTrue(model.isGameOver());
+  }
+
+  @Test
+  public void testIsGameOverFalse() {
+    assertFalse(model.isGameOver());
   }
 
   @Test
