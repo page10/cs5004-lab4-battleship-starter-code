@@ -94,21 +94,56 @@ public class BattleshipModelImplTest {
 
   @Test
   public void areAllShipsSunk() {
+    assertFalse(model.areAllShipsSunk());  // how to test the true case?
   }
 
   @Test
-  public void getGuessCount() {
+  public void testGetGuessCountInitial() {
+    assertEquals(0, model.getGuessCount());
   }
+
+  @Test
+  public void testGetGuessCountAfterOneGuess() {
+    model.makeGuess(0, 0);
+    assertEquals(1, model.getGuessCount());
+  }
+
 
   @Test
   public void getMaxGuesses() {
+    assertEquals(10, model.getMaxGuesses());
+  }
+
+
+  @Test
+  public void testGetCellGridNotNull() {
+    CellState[][] visualMap = model.getCellGrid();
+    assertNotNull(visualMap);
   }
 
   @Test
-  public void getCellGrid() {
+  public void testGetCellGridInitialState() {
+    CellState[][] visualMap = model.getCellGrid();
+    for (int i = 0; i < visualMap.length; i++) {
+      for (int j = 0; j < visualMap[i].length; j++) {
+        assertEquals(CellState.UNKNOWN, visualMap[i][j]);
+      }
+    }
   }
 
   @Test
-  public void getShipGrid() {
+  public void testGetShipGrid() {
+    ShipType[][] shipGrid = model.getShipGrid();
+    assertNotNull(shipGrid);
+
+    for (int i = 0; i < shipGrid.length; i++) {
+      for (int j = 0; j < shipGrid[i].length; j++) {
+        ShipType cell = shipGrid[i][j];
+        if (cell != null) {
+          assertTrue(cell instanceof ShipType);  // dont know what else could test here
+        }
+
+      }
+    }
   }
 }
